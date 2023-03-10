@@ -1,0 +1,24 @@
+import sqlite3 as sl
+con = sl.connect('thecode.db')
+with con:
+    con.execute("""
+        CREATE TABLE books (
+            product VARCHAR(20) PRIMARY KEY,
+            count INTEGER,
+            price INTEGER
+
+);
+    """)
+
+sql = 'INSERT INTO books ( name, author, year, favorite) values(?, ?, ?)'
+data = [
+    ('Капитанская дочка', 'Пушкин', 1834, 'yes'),
+    ('Евгений Онеги', 'Пушкин', 1830, 'no'),
+    ('Золотая рыбка', 'Пушкин', 1833, 'yes')
+]
+with con:
+    con.executemany(sql, data)
+with con:
+    data = con.execute("SELECT * FROM books")
+    for row in data:
+        print(row)
